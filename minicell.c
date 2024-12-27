@@ -1,9 +1,15 @@
 #include <ctype.h>
-#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
+#define handle_error(msg)                                                      \
+  do {                                                                         \
+    perror(msg);                                                               \
+    exit(EXIT_FAILURE);                                                        \
+  } while (0)
 
 typedef struct s_cell {
   uint32_t row;
@@ -45,5 +51,16 @@ int col_alpha_to_num(char *s) {
 
 int main() {
   char *test = "ZZZZ";
+  FILE *fp;
+  fp = fopen("input.csv", "r");
+  if (fp == NULL)
+    handle_error("fopen");
+  char c;
+  while ((c = getc(fp)) != -1) {
+    if (c == '\n')
+      printf("\n");
+    printf("%c", c);
+  }
+  fclose(fp);
   printf("%d\n", col_alpha_to_num(test));
 }
